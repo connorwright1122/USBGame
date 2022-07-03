@@ -3685,10 +3685,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turn: {x: 0, y: 0}
-  sensitivity: 0.5
+  sensitivity: 2
   sensitivityCopy: 0
   canLook: 1
   rb: {fileID: 0}
+  cursorVisible: 0
 --- !u!54 &1448230985
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -41,6 +41,8 @@ public class MouseLook : MonoBehaviour
 
     public Rigidbody rb;
 
+    public bool cursorVisible = false;
+
 
     //1/6
     //public ConfigurableJoint pelvisJoint;
@@ -48,8 +50,10 @@ public class MouseLook : MonoBehaviour
     private void Start()
     {
         //Cursor.lockState = CursorLockMode.Locked; //change when 
-        Cursor.lockState = CursorLockMode.Confined; //change when 
-        Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Confined; //change when in pause
+        //Cursor.visible = cursorVisible;
+        //Cursor.visible = false;
+        LockCursor(cursorVisible);
         sensitivityCopy = sensitivity;
 
         rb = GetComponent<Rigidbody>();
@@ -105,6 +109,22 @@ public class MouseLook : MonoBehaviour
         else
         {
             sensitivity = 0f;
+        }
+    }
+
+
+    public void LockCursor(bool yes)
+    {
+        if (yes)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+        else
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
         }
     }
 }

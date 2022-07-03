@@ -9,12 +9,13 @@ public class PauseMenu : MonoBehaviour
     public bool canPause = true;
 
     public GameObject pauseUI;
-    public MovementOnlyForward player;
+    public MovementV2 player;
     
     void Start()
     {
         pauseUI = transform.GetChild(0).gameObject;
-        player = GameObject.FindWithTag("Player").GetComponent<MovementOnlyForward>();
+        //player = GameObject.FindWithTag("Player").GetComponent<MovementOnlyForward>();
+        player = GameObject.FindWithTag("Player").GetComponent<MovementV2>();
     }
 
     void Update()
