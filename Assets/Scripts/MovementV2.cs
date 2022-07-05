@@ -27,6 +27,8 @@ public class MovementV2 : MonoBehaviour
     [Header("Boost")]
     public float boostSpeed = 50f;
     public int ability = 1;
+    public bool canBoost = true;
+    public float boostCooldown = 2f;
 
 
     void Start()
@@ -133,10 +135,14 @@ public class MovementV2 : MonoBehaviour
     //ABILITIES
     public void ActivateAbility(int ability)
     {
-        if (ability == 1)
+        if (canBoost)
         {
-            ActivateBoost();
+            if (ability == 1)
+            {
+                ActivateBoost();
+            }
         }
+        
         
     }
 
@@ -144,6 +150,18 @@ public class MovementV2 : MonoBehaviour
     public void ActivateBoost()
     {
         rb.AddForce(transform.forward * boostSpeed, ForceMode.VelocityChange);
-        ability = 2;
+        //ability = 2;
+
+        StartCoroutine(ActivateCooldown());
+    }
+
+    IEnumerator ActivateCooldown()
+    {
+        canBoost = false;
+
+        yield return new WaitForSeconds(boostCooldown);
+
+        canBoost = true;
+        Debug.Log("br");
     }
 }
