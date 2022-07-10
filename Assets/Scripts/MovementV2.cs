@@ -25,16 +25,44 @@ public class MovementV2 : MonoBehaviour
 
 
     [Header("Boost")]
-    public float boostSpeed = 50f;
     public int ability = 1;
-    public bool canBoost = true;
     public float boostCooldown = 2f;
+    public float boostSpeed = 50f;
+    public bool canBoost = true;
+    
+
+
+    [Header("Explosion")]
+    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float explosionForce = 500f;
+
+
+    [Header("Wind")]
+    public bool inWindZone = false;
+    public GameObject windZone;
+
+
+    
+
+
+    //CHANGE COLOR
+    private ChangeColor colorChanger;
+
+    //private FixedJoint fj;
+    //private GameObject grabbedObject;
+    //private Rigidbody grabbedObjectRB;
+    //private Transform grabbedParent;
+    public bool isHolding = false;
+    private Rigidbody grabbedRB;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         mouseLook = GetComponent<MouseLook>();
+
+        colorChanger = GetComponentInChildren<ChangeColor>();
+        //fj = GetComponent<FixedJoint>();
     }
 
 
@@ -46,6 +74,13 @@ public class MovementV2 : MonoBehaviour
 
         //DECELERATION
         //decelSpeed = 1.5f * rb.velocity.magnitude + 40;
+
+        //WIND
+        if (inWindZone)
+        {
+            WindArea wa = windZone.GetComponent<WindArea>();
+            rb.AddForce(wa.direction * wa.windStrength);
+        }
     }
 
 
@@ -108,9 +143,98 @@ public class MovementV2 : MonoBehaviour
         {
             ActivateAbility(ability);
         }
+
+        if (Input.GetKey(KeyCode.F) && isHolding) //grabbedObject != null)
+        {
+            DropObject();
+        }
     }
 
+
+    //WIND
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "WindArea")
+        {
+            windZone = other.gameObject;
+            inWindZone = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "WindArea")
+        {
+            inWindZone = false;
+        }
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        GameObject collisionGO = collision.gameObject;
+
+        if (collisionGO.tag == "CanGrab" && !isHolding)//grabbedObject == null)
+        {
+            PickupObject(collisionGO);
+        }
+    }
+
+
+    void PickupObject(GameObject touchedOBJ)
+    {
+        /*
+        //fj.connectedBody = collision.gameObject.GetComponent<Rigidbody>(); //fixedjoint fail - freezes
+        //Rigidbody objRB = touchedOBJ.GetComponent<Rigidbody>();
+        grabbedObjectRB = touchedOBJ.GetComponent<Rigidbody>();
+        grabbedObjectRB.useGravity = false;
+        grabbedObjectRB.drag = 10;
+        grabbedObjectRB.constraints = RigidbodyConstraints.FreezeRotation;
+        //objRB.constraints = RigidbodyConstraints.
+
+        grabbedObjectRB.transform.parent = transform;
+        grabbedObject = touchedOBJ;
+        */
+
+        grabbedRB = touchedOBJ.GetComponent<Rigidbody>();
+        grabbedRB.useGravity = false;
+
+        var fj = gameObject.AddComponent<FixedJoint>();
+
+        fj.connectedBody = grabbedRB;
+        isHolding = true;
+
+
+        Debug.Log("p");
+    }
     
+    void DropObject()
+    {
+        /*
+        //fj.connectedBody = collision.gameObject.GetComponent<Rigidbody>(); //fixedjoint fail - freezes
+        //grabbedObjectRB = touchedOBJ.GetComponent<Rigidbody>();
+        grabbedObjectRB.useGravity = true;
+        grabbedObjectRB.drag = 1;
+        grabbedObjectRB.constraints = RigidbodyConstraints.None;
+        //objRB.constraints = RigidbodyConstraints.
+
+        grabbedObject.transform.parent = null;
+        grabbedObject = null;
+        */
+
+        grabbedRB.useGravity = true;
+        grabbedRB = null;
+
+        Destroy(GetComponent<FixedJoint>());
+
+        isHolding = false;
+
+        Debug.Log("d");
+    }
+
+
+    
+
 
     public void FreezePlayer()
     {
@@ -141,6 +265,12 @@ public class MovementV2 : MonoBehaviour
             {
                 ActivateBoost();
             }
+            else if (ability == 2)
+            {
+                ActivateExplosion();
+            }
+
+            colorChanger.ShowAbilityDepleted();
         }
         
         
@@ -151,6 +281,7 @@ public class MovementV2 : MonoBehaviour
     {
         rb.AddForce(transform.forward * boostSpeed, ForceMode.VelocityChange);
         //ability = 2;
+        
 
         StartCoroutine(ActivateCooldown());
     }
@@ -158,10 +289,29 @@ public class MovementV2 : MonoBehaviour
     IEnumerator ActivateCooldown()
     {
         canBoost = false;
+        //colorChanger.ShowAbilityDepleted();
 
         yield return new WaitForSeconds(boostCooldown);
 
         canBoost = true;
+        colorChanger.ShowAbilityCharged();
         Debug.Log("br");
+    }
+
+
+
+    public void ActivateExplosion()
+    {
+        var surroundingObjects = Physics.OverlapSphere(transform.position, explosionRadius);
+
+        foreach (var obj in surroundingObjects)
+        {
+            var rb = obj.GetComponent<Rigidbody>();
+            if (rb == null) continue;
+
+            rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+        }
+
+        StartCoroutine(ActivateCooldown());
     }
 }
