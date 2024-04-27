@@ -419,6 +419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 119108625}
   - component: {fileID: 119108626}
+  - component: {fileID: 119108627}
   m_Layer: 0
   m_Name: MainMenuUI
   m_TagString: Untagged
@@ -451,6 +452,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 524b11db788fced43a52ad0b6f5ec11a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &119108627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119108624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff0cb16bf38296c4396c3e6e873da095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &143105274
@@ -3623,15 +3636,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 73e4c0266c266bf48b5d3d15d4588949, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12
+      value: -15.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 73e4c0266c266bf48b5d3d15d4588949, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -58
+      value: -137.34
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 73e4c0266c266bf48b5d3d15d4588949, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -254
+      value: -184
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 73e4c0266c266bf48b5d3d15d4588949, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3679,7 +3692,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448230982}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d674555cdaa7c24e96b23ecec8d61bf, type: 3}
   m_Name: 

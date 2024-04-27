@@ -42,6 +42,7 @@ public class LevelCompleteMenu : MonoBehaviour
         completeActive = true;
         completeUI.SetActive(true);
         moveNL.SetNextScenePlayerPrefs();
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     //public void SetScoreValues(float accuracy, string finalTime)

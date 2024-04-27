@@ -53,7 +53,10 @@ public class MouseLook : MonoBehaviour
         //Cursor.lockState = CursorLockMode.Confined; //change when in pause
         //Cursor.visible = cursorVisible;
         //Cursor.visible = false;
-        LockCursor(cursorVisible);
+
+        //LockCursor(cursorVisible);
+        //LockCursor(false);
+        Cursor.lockState = CursorLockMode.Locked;
         sensitivityCopy = sensitivity;
 
         rb = GetComponent<Rigidbody>();

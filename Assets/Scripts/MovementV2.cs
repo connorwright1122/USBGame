@@ -26,7 +26,7 @@ public class MovementV2 : MonoBehaviour
 
     [Header("Boost")]
     public int ability = 1;
-    public float boostCooldown = 2f;
+    public float boostCooldown = 5f;
     public float boostSpeed = 50f;
     public bool canBoost = true;
     
@@ -42,6 +42,9 @@ public class MovementV2 : MonoBehaviour
     public GameObject windZone;
 
 
+    private ParticleSystem speedParticles;
+    //private ParticleSystem speedParticles;
+    private bool particlesActive = false;
     
 
 
@@ -63,6 +66,7 @@ public class MovementV2 : MonoBehaviour
 
         colorChanger = GetComponentInChildren<ChangeColor>();
         //fj = GetComponent<FixedJoint>();
+        speedParticles = GetComponentInChildren<ParticleSystem>();
     }
 
 
@@ -148,6 +152,10 @@ public class MovementV2 : MonoBehaviour
         {
             DropObject();
         }
+
+
+        //PARTICLES
+        CheckSpeed();
     }
 
 
@@ -313,5 +321,37 @@ public class MovementV2 : MonoBehaviour
         }
 
         StartCoroutine(ActivateCooldown());
+    }
+
+
+    //PARTICLES
+    void CheckSpeed()
+    {
+        var mag = rb.velocity.magnitude;
+        var emission = speedParticles.emission;
+        //var localVel = transform.InverseTransformDirection(rb.velocity);
+
+        //Debug.Log(mag);
+
+        if (mag > 10) 
+        {
+            if (!particlesActive)
+            {
+                speedParticles.Play();
+                emission.enabled = true;
+                particlesActive = true;              
+            }                       
+        }
+
+        else 
+        {
+            if (particlesActive)
+            {
+                speedParticles.Clear();
+                emission.enabled = false;
+                particlesActive = false;
+            }           
+        }
+        
     }
 }

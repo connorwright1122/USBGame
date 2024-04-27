@@ -20,7 +20,7 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && canPause)
+        if (Input.GetKeyDown(KeyCode.Q) && canPause)
         {
             if (!isPaused)
             {
@@ -39,6 +39,7 @@ public class PauseMenu : MonoBehaviour
         player.FreezePlayer();
         pauseUI.SetActive(true);
         isPaused = true;
+        Cursor.lockState = CursorLockMode.Confined;
     }
     public void UnpauseGame()
     {
@@ -46,10 +47,12 @@ public class PauseMenu : MonoBehaviour
         player.UnfreezePlayer();
         pauseUI.SetActive(false);
         isPaused = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void LoadMenu()
     {
+        Cursor.lockState = CursorLockMode.Confined;
         SceneManager.LoadScene("MainMenu");
     }
 }
